@@ -69,7 +69,7 @@ public class GeminiApiController {
     }
 
     @PostMapping("/emotion")
-    public String emotionTell(EmoRequest emoRequest) throws IOException {
+    public String emotionTell(EmoRequest emoRequest) throws Exception {
         String response;
 //        emoRequest.setPrompt(prompt);
         emoRequest.setPrompt("왜 하늘은 푸를까");

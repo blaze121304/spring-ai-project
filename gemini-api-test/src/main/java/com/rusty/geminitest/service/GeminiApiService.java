@@ -2,6 +2,7 @@ package com.rusty.geminitest.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.vertexai.VertexAI;
 import com.google.cloud.vertexai.api.GenerateContentResponse;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
@@ -10,13 +11,17 @@ import com.rusty.geminitest.controller.GeminiApiController;
 import com.rusty.geminitest.domain.dto.EmoRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
+import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Optional;
 
 @Service
 public class GeminiApiService {
@@ -25,7 +30,7 @@ public class GeminiApiService {
     private String apiKey;
 
     @Value("${vertex.ai.region}")
-    private String region;
+    private String location;
 
     @Value("${vertex.ai.project.id}")
     private String projectId;
@@ -90,21 +95,37 @@ public class GeminiApiService {
 
 
     //https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/gemini?hl=ko 참조
-    public String helpEmotion(EmoRequest emoRequest) {
+    public String helpEmotion(EmoRequest emoRequest) throws Exception {
 
-        // Initialize client that will be used to send requests.
-        // This client only needs to be created once, and can be reused for multiple requests.
-        try (VertexAI vertexAI = new VertexAI(projectId, region)) {
-            String output;
-            GenerativeModel model = new GenerativeModel(modelName, vertexAI);
-            // Send the question to the model for processing.
-            GenerateContentResponse response = model.generateContent(emoRequest.getPrompt());
-            // Extract the generated text from the model's response.
-            output = ResponseHandler.getText(response);
-            return output;
-        } catch (Exception e) {
-            log.warn(e.getMessage());
-            throw new RuntimeException(e);
+        ServiceAccountCredentials credentials = ServiceAccountCredentials.fromStream(
+                new FileInputStream("D:/gen-lang-client-0470512316-d584ef56f856.json"));
+
+//            try (VertexAI vertexAI = new VertexAI(projectId, region, Optional.of(credentials))) {
+//                String output;
+//                GenerativeModel model = new GenerativeModel(modelName, vertexAI);
+//                GenerateContentResponse response = model.generateContent(emoRequest.getPrompt());
+//                output = ResponseHandler.getText(response);
+//                return output;
+//            } catch (Exception e) {
+//                log.warn(e.getMessage());
+//                throw new RuntimeException(e);
+//            }
+
+            try (VertexAI vertexAI = new VertexAI(projectId, location)) {
+                String output;
+                var chatModel = new VertexAiGeminiChatModel(this.vertexApi,
+                        VertexAiGeminiChatOptions.builder()
+                                .model(ChatModel.GEMINI_PRO_1_5_PRO)
+                                .temperature(0.4)
+                                .build());
+
+                return output;
+            } catch (Exception e) {
+                log.warn(e.getMessage());
+                throw new RuntimeException(e);
+            }
+
         }
+
+
     }
-}
