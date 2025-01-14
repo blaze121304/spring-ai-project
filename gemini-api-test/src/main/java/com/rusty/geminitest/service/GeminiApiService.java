@@ -4,7 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.vertexai.VertexAI;
+import com.google.cloud.vertexai.api.FunctionDeclaration;
 import com.google.cloud.vertexai.api.GenerateContentResponse;
+import com.google.cloud.vertexai.api.Schema;
+import com.google.cloud.vertexai.api.Type;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.cloud.vertexai.generativeai.ResponseHandler;
 import com.rusty.geminitest.controller.GeminiApiController;
@@ -100,26 +103,24 @@ public class GeminiApiService {
         ServiceAccountCredentials credentials = ServiceAccountCredentials.fromStream(
                 new FileInputStream("D:/gen-lang-client-0470512316-d584ef56f856.json"));
 
-//            try (VertexAI vertexAI = new VertexAI(projectId, region, Optional.of(credentials))) {
-//                String output;
-//                GenerativeModel model = new GenerativeModel(modelName, vertexAI);
-//                GenerateContentResponse response = model.generateContent(emoRequest.getPrompt());
-//                output = ResponseHandler.getText(response);
-//                return output;
-//            } catch (Exception e) {
-//                log.warn(e.getMessage());
-//                throw new RuntimeException(e);
-//            }
-
             try (VertexAI vertexAI = new VertexAI(projectId, location)) {
-                String output;
-                var chatModel = new VertexAiGeminiChatModel(this.vertexApi,
-                        VertexAiGeminiChatOptions.builder()
-                                .model(ChatModel.GEMINI_PRO_1_5_PRO)
-                                .temperature(0.4)
-                                .build());
 
-                return output;
+                FunctionDeclaration functionDeclaration = FunctionDeclaration.newBuilder()
+                        .setName("getCurrentWeather")
+                        .setDescription("What's the weather like in Seoul?")
+                        .setParameters(
+                                Schema.newBuilder()
+                                        .setType(Type.OBJECT)
+                                        .putProperties("location", Schema.newBuilder()
+                                                .setType(Type.STRING)
+                                                .setDescription("location")
+                                                .build()
+                                        )
+                                        .addRequired("location")
+                                        .build()
+                        )
+                        .build();
+
             } catch (Exception e) {
                 log.warn(e.getMessage());
                 throw new RuntimeException(e);
