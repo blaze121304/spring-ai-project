@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -32,6 +29,15 @@ public class GeminiApiController {
 
     @Value("${gemini.prompt}")
     private String prompt;
+
+    @Value("${vertex.ai.project.id}")
+    private String projectId;
+
+    @Value("${vertex.ai.region}")
+    private String region;
+
+    @Value("${vertex.ai.model}")
+    private String model;
 
     @PostMapping("/pimage")
     public ResponseEntity<HashMap<String, Object>> processImage(@RequestParam("file") MultipartFile file, @RequestParam("prompt") String prompt) {
@@ -68,13 +74,20 @@ public class GeminiApiController {
 
     }
 
-    @PostMapping("/emotion")
+
+    @GetMapping("/emotion")
     public String emotionTell(EmoRequest emoRequest) throws Exception {
         String response;
 //        emoRequest.setPrompt(prompt);
-        emoRequest.setPrompt("왜 하늘은 푸를까");
+        emoRequest.setPrompt("why sky is blue");
         response = geminiApiService.helpEmotion(emoRequest);
         return response;
+    }
+
+    @GetMapping("/text")
+    public void chatText() throws Exception {
+        String response;
+        geminiApiService.chatDiscussion(projectId,region,model);
     }
 
 }

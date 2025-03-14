@@ -8,6 +8,7 @@ import com.google.cloud.vertexai.api.FunctionDeclaration;
 import com.google.cloud.vertexai.api.GenerateContentResponse;
 import com.google.cloud.vertexai.api.Schema;
 import com.google.cloud.vertexai.api.Type;
+import com.google.cloud.vertexai.generativeai.ChatSession;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.cloud.vertexai.generativeai.ResponseHandler;
 import com.rusty.geminitest.controller.GeminiApiController;
@@ -126,7 +127,32 @@ public class GeminiApiService {
                 throw new RuntimeException(e);
             }
 
+        return "";
+    }
+
+    // Ask interrelated questions in a row using a ChatSession object.
+    public void chatDiscussion(String projectId, String location, String modelName)
+            throws IOException {
+        // Initialize client that will be used to send requests. This client only needs
+        // to be created once, and can be reused for multiple requests.
+        try (VertexAI vertexAI = new VertexAI(projectId, location)) {
+            GenerateContentResponse response;
+
+            GenerativeModel model = new GenerativeModel(modelName, vertexAI);
+            // Create a chat session to be used for interactive conversation.
+            ChatSession chatSession = new ChatSession(model);
+
+            response = chatSession.sendMessage("Hello.");
+            System.out.println(ResponseHandler.getText(response));
+
+            response = chatSession.sendMessage("What are all the colors in a rainbow?");
+            System.out.println(ResponseHandler.getText(response));
+
+            response = chatSession.sendMessage("Why does it appear when it rains?");
+            System.out.println(ResponseHandler.getText(response));
+            System.out.println("Chat Ended.");
         }
+    }
 
 
     }

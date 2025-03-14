@@ -5,6 +5,7 @@ import com.google.cloud.aiplatform.v1.EndpointName;
 import com.google.cloud.aiplatform.v1.PredictResponse;
 import com.google.cloud.aiplatform.v1.PredictionServiceClient;
 import com.google.cloud.aiplatform.v1.PredictionServiceSettings;
+import com.google.cloud.
 
 import com.google.gson.Gson;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -27,8 +28,7 @@ public class EditImageInpaintingInsertMaskSample {
         String location = "asia-northeast3";
         String inputPath = "/path/to/my-input.png";
         String maskPath = "/path/to/my-mask.png";
-        String prompt =
-                ""; // The text prompt describing what you want to see inserted in the mask area.
+        String prompt = ""; // The text prompt describing what you want to see inserted in the mask area.
 
         editImageInpaintingInsertMask(projectId, location, inputPath, maskPath, prompt);
     }
