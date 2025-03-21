@@ -23,6 +23,10 @@ public class ChatController {
         return chatService.chat(message);
     }
 
+    @GetMapping("/chatsys")
+    public String chatSys(@RequestParam("message") String message) {
+        return chatService.chatMessage(message);
+    }
 
 
 }
