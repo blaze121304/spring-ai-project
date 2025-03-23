@@ -18,6 +18,16 @@ public class ChatService {
         return chatClient.prompt().user(message).call().content();
     }
 
+    public String chatMessage(String message) {
+        return rollClient.prompt()
+                .user(message)
+                .call()
+                .chatResponse()
+                .getResult()
+                .getOutput()
+                .getText();
+    }
+
     public String chatplace(String subject, String tone, String message) {
         return chatClient.prompt()
                 .user(message)

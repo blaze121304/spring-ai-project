@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.rusty</groupId>
-    <artifactId>gemini-api-test</artifactId>
+    <artifactId>gemini-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>gemini-api-test</name>
     <description>gemini-api-test</description>
