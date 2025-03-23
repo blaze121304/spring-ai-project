@@ -17,4 +17,18 @@ public class ChatService {
     public String chat(String message) {
         return chatClient.prompt().user(message).call().content();
     }
+
+    public String chatplace(String subject, String tone, String message) {
+        return chatClient.prompt()
+                .user(message)
+                .system(sp->sp
+                        .param("subject",subject)
+                        .param("tone", tone)
+                )
+                .call()
+                .chatResponse()
+                .getResult()
+                .getOutput()
+                .getContent();
+    }
 }

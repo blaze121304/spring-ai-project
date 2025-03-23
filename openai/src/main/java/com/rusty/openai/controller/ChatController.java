@@ -23,6 +23,12 @@ public class ChatController {
         return chatService.chat(message);
     }
 
+    @GetMapping("/chatplace")
+    //                                            QuestionDTO
+    public String chatplace(String subject, String tone, String message){
+        return chatService.chatplace(subject, tone, message);
+    }
+
 
 
 }
