@@ -1,7 +1,9 @@
 package com.rusty.openai.controller;
 
+import com.rusty.openai.entiry.Answer;
 import com.rusty.openai.service.ChatService;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +35,16 @@ public class ChatController {
         return chatService.chatplace(subject, tone, message);
     }
 
+    @GetMapping("/chatjson")
+    public ChatResponse chatjson(String message){
+        return chatService.chatjson(message);
+    }
+
+    @GetMapping("/chatobject")
+    // {"answer" : "dsddsddsd" }
+    public Answer chatobject(String message){
+        return chatService.chatobject(message);
+    }
 
 
 }

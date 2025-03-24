@@ -1,7 +1,9 @@
 package com.rusty.openai.service;
 
+import com.rusty.openai.entiry.Answer;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -9,9 +11,11 @@ public class ChatService {
 
     @Autowired
     private final ChatClient chatClient;
+    private final ChatClient rollClient;
 
-    public ChatService(ChatClient chatClient) {
+    public ChatService(ChatClient chatClient, ChatClient rollClient) {
         this.chatClient = chatClient;
+        this.rollClient = rollClient;
     }
 
     public String chat(String message) {
@@ -39,6 +43,23 @@ public class ChatService {
                 .chatResponse()
                 .getResult()
                 .getOutput()
-                .getContent();
+                .getText(); //getContent
+    }
+
+    public ChatResponse chatjson(String message) {
+        return chatClient.prompt()
+                .user(message)
+                .call()
+                .chatResponse(); // ChatResponse(?)-->JSON
+              /*  .getResult()
+                .getOutput()
+                .getContent();*/
+    }
+
+    public Answer chatobject(String message) {
+        return chatClient.prompt()
+                .user(message)
+                .call()
+                .entity(Answer.class);
     }
 }
