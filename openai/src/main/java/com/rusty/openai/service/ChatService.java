@@ -2,9 +2,14 @@ package com.rusty.openai.service;
 
 import com.rusty.openai.entiry.Answer;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.converter.ListOutputConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ai.chat.model.ChatResponse;
+import org.springframework.core.convert.support.DefaultConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Service
 public class ChatService {
@@ -61,5 +66,26 @@ public class ChatService {
                 .user(message)
                 .call()
                 .entity(Answer.class);
+    }
+
+    private final String recipeTemplate= """
+           Answer for {foodName} for {question} ?
+           """;
+
+    public Answer recipe(String foodName, String question) {
+        return chatClient.prompt()
+                .user(userSpec->userSpec.text(recipeTemplate)
+                        .param("foodName", foodName)
+                        .param("question", question)
+                )
+                .call()
+                .entity(Answer.class);
+    }
+
+    public List<String> chatlist(String message) {
+        return chatClient.prompt()
+                .user(message)
+                .call()
+                .entity(new ListOutputConverter(new DefaultConversionService()));
     }
 }
