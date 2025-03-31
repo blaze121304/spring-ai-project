@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/gemini-api-example/pom.xml" />
         <option value="$PROJECT_DIR$/openai-test/pom.xml" />
         <option value="$PROJECT_DIR$/openai/pom.xml" />
+        <option value="$PROJECT_DIR$/openai-api-gps/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

@@ -2,6 +2,7 @@ package com.rusty.openai.service;
 
 import com.rusty.openai.entiry.Answer;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.converter.ListOutputConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -17,10 +18,12 @@ public class ChatService {
     @Autowired
     private final ChatClient chatClient;
     private final ChatClient rollClient;
+    private final ChatModel chatModel;
 
-    public ChatService(ChatClient chatClient, ChatClient rollClient) {
+    public ChatService(ChatClient chatClient, ChatClient rollClient, ChatModel chatModel) {
         this.chatClient = chatClient;
         this.rollClient = rollClient;
+        this.chatModel = chatModel;
     }
 
     public String chat(String message) {
@@ -88,4 +91,21 @@ public class ChatService {
                 .call()
                 .entity(new ListOutputConverter(new DefaultConversionService()));
     }
+
+    public String getResponse(String message){
+        return chatModel.call(message);
+    }
+
+    public String getResponseOptions(String message){
+        ChatResponse response = chatModel.call(
+                new Prompt(
+                        message,
+                        OpenAiChatOptions.builder()
+                                .withModel("gpt-4o")
+                                .withTemperature(0.4)
+                                .build()
+                ));
+        return response.getResult().getOutput().getContent();
+    }
+
 }
