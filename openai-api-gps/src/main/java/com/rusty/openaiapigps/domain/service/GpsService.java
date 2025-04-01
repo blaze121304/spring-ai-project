@@ -1,7 +1,7 @@
 package com.rusty.openaiapigps.domain.service;
 
 import com.rusty.openaiapigps.domain.dto.GpsDataDto;
-import com.rusty.openaiapigps.domain.entity.GpsData;
+//import com.rusty.openaiapigps.domain.entity.GpsData;
 import com.rusty.openaiapigps.repository.GpsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,14 @@ public class GpsService {
         this.gpsRepository = gpsRepository;
     }
 
-    public void saveGpsData(GpsDataDto dto) {
-        GpsData gpsData = new GpsData();
-        gpsData.setLatitude(dto.getLatitude());
-        gpsData.setLongitude(dto.getLongitude());
-        gpsRepository.save(gpsData);
+    public void saveGpsData(GpsDataDto gpsDataDto) {
+
+//        GpsData gpsData = new GpsData();
+//
+//        gpsData.setLatitude(gpsDataDto.getLatitude());
+//        gpsData.setLongitude(gpsDataDto.getLongitude());
+
+        //gpsRepository.save(gpsData);        //jpa
+        gpsRepository.save(gpsDataDto);     //jdbctemplate
     }
 }

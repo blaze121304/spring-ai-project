@@ -107,5 +107,4 @@ public class ChatService {
                 ));
         return response.getResult().getOutput().getContent();
     }
-
 }

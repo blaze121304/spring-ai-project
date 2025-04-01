@@ -1,7 +1,9 @@
 package com.rusty.openaiapigps.repository;
 
-import com.rusty.openaiapigps.domain.entity.GpsData;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.rusty.openaiapigps.domain.dto.GpsDataDto;
+//import com.rusty.openaiapigps.domain.entity.GpsData;
 
-public class GpsRepository extends JpaRepository<GpsData, Long> {
+public interface GpsRepository {
+    void save(GpsDataDto gpsDataDto);
+//    void save(GpsData gpsData);
 }

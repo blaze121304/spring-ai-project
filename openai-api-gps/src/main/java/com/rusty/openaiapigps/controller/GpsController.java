@@ -1,12 +1,10 @@
 package com.rusty.openaiapigps.controller;
 
+import com.rusty.openaiapigps.config.DynamicDataSource;
 import com.rusty.openaiapigps.domain.dto.GpsDataDto;
 import com.rusty.openaiapigps.domain.service.GpsService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/gps")
@@ -23,4 +21,28 @@ public class GpsController {
         gpsService.saveGpsData(gpsDataDto);
         return ResponseEntity.ok("GPS data saved successfully");
     }
+
+    @GetMapping("/db1")
+    public String useMainDb() {
+        DynamicDataSource.setDataSourceKey("main");
+        try {
+            // mainDb 사용하는 로직
+            return "DB IS CHANGE TO MAIN DB";
+        } finally {
+            DynamicDataSource.clearDataSourceKey();
+        }
+    }
+
+    @GetMapping("/db2")
+    public String useSecondaryDb() {
+        DynamicDataSource.setDataSourceKey("secondary");
+        try {
+            // secondaryDb 사용하는 로직
+            return "DB IS CHANGE TO SECOND DB";
+        } finally {
+            DynamicDataSource.clearDataSourceKey();
+        }
+    }
+
+
 }
