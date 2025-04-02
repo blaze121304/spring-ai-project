@@ -5,6 +5,7 @@ import com.rusty.openaiapigps.domain.dto.GpsDataDto;
 import com.rusty.openaiapigps.repository.GpsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GpsService {
@@ -25,5 +26,18 @@ public class GpsService {
 
         //gpsRepository.save(gpsData);        //jpa
         gpsRepository.save(gpsDataDto);     //jdbctemplate
+
+    }
+
+    @Transactional
+    public String getDataSource() throws InterruptedException {
+        log.info("DataSource 조회");
+
+        // 무거운 비즈니스 로직
+        Thread.sleep(100000L);
+
+        // 실제로 커넥션이 필요한 시점
+        dataSourceMapRepository.findById(1L);
+        return "조회 완료";
     }
 }

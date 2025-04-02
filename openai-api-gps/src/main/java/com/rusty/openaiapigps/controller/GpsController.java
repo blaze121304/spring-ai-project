@@ -1,6 +1,7 @@
 package com.rusty.openaiapigps.controller;
 
 import com.rusty.openaiapigps.config.DynamicDataSource;
+import com.rusty.openaiapigps.config.DynamicDataSourceManager;
 import com.rusty.openaiapigps.domain.dto.GpsDataDto;
 import com.rusty.openaiapigps.domain.service.GpsService;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +12,11 @@ import org.springframework.web.bind.annotation.*;
 public class GpsController {
 
     private final GpsService gpsService;
+    private final DynamicDataSourceManager dynamicDataSourceManager;
 
-    public GpsController(GpsService gpsService) {
+    public GpsController(GpsService gpsService, DynamicDataSourceManager dynamicDataSourceManager) {
         this.gpsService = gpsService;
+        this.dynamicDataSourceManager = dynamicDataSourceManager;
     }
 
     @PostMapping
@@ -43,6 +46,15 @@ public class GpsController {
             DynamicDataSource.clearDataSourceKey();
         }
     }
+
+    @GetMapping("/dbchange")
+    public String useMainDb1() {
+        if(dynamicDataSourceManager.getCurrentDataSource().equals("main")){
+            dynamicDataSourceManager.switchDataSource( "backup");
+        }
+        return "DB IS CHANGE TO MAIN DB";
+    }
+
 
 
 }
