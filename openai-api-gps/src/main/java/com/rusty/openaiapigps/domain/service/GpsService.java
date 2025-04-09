@@ -3,10 +3,12 @@ package com.rusty.openaiapigps.domain.service;
 import com.rusty.openaiapigps.domain.dto.GpsDataDto;
 //import com.rusty.openaiapigps.domain.entity.GpsData;
 import com.rusty.openaiapigps.repository.GpsRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 public class GpsService {
 
